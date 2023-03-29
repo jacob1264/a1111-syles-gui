@@ -19,6 +19,14 @@ python styles.py
 * Copy Styles
 * Edit Prompts and Negative Prompt
 
+## Dependencies
+
+* This tool relies on the pandas library for parsing csv data
+```
+pip install pandas
+```
+There were issues with the formatting of styles.csv that prevented me from utilizing python's built in csv library
+
 ## Future
 
 * This would be better as an A1111 extension
