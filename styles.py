@@ -39,7 +39,7 @@ class StyleEditor:
         self.delete_style_button.pack(side="top", pady=2, fill="x", anchor="w")
 
         self.copy_style_button = tk.Button(self.button_frame, text="Copy Style", command=self.copy_style, width=button_width)
-        self.copy_style_button.pack(side="left", pady=2, fill="x", anchor="w")
+        self.copy_style_button.pack(side="top", pady=2, fill="x", anchor="w")
 
         self.labels = ["name", "prompt", "negative_prompt"]
         self.entries = []
