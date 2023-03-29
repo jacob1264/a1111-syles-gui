@@ -5,7 +5,7 @@ from tkinter import messagebox
 class StyleEditor:
     def __init__(self, root):
         self.root = root
-        self.root.title("A1111 Styles Editor by Ok-Lobster-919")
+        self.root.title("A1111 Styles Editor")
 
         # Initialize the DataFrame and other state variables
         self.styles_df = None
@@ -156,7 +156,7 @@ class StyleEditor:
     def set_unsaved_changes(self, value):
         self.unsaved_changes = value
         if value:
-            self.unsaved_changes_label.place(x=160, y=12, anchor="nw")
+            self.unsaved_changes_label.place(x=160, y=2, anchor="nw")
         else:
             self.unsaved_changes_label.place_forget()
 
