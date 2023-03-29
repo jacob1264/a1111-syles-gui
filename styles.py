@@ -24,11 +24,15 @@ class StyleEditor:
         self.save_button.grid(row=0, column=0, padx=88, sticky="w")
 
         self.style_listbox = tk.Listbox(self.root, exportselection=False)
-        self.style_listbox.grid(row=1, column=0, padx=5, pady=(5, 0), sticky="nsew")
+        self.style_listbox.grid(row=1, column=0, padx=(5, 0), pady=(5, 0), sticky="nsew")
         self.style_listbox.bind("<<ListboxSelect>>", self.show_style)
 
+        self.style_listbox_scrollbar = tk.Scrollbar(self.root, orient="vertical", command=self.style_listbox.yview)
+        self.style_listbox_scrollbar.grid(row=1, column=1, pady=(5, 0), sticky="ns")
+        self.style_listbox.config(yscrollcommand=self.style_listbox_scrollbar.set)
+
         self.button_frame = tk.Frame(self.root)
-        self.button_frame.grid(row=1, column=1, rowspan=2, padx=5, pady=(5, 0), sticky="nse")
+        self.button_frame.grid(row=1, column=2, rowspan=2, padx=5, pady=(5, 0), sticky="nsw")
 
         button_width = 15
 
