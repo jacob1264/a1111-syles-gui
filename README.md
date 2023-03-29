@@ -2,7 +2,14 @@
 A basic GUI styles.csv editor based in tkinter for Stable Diffusion Automatic1111 release.
 I made this quickly to deal with my frustrations in dealing with A1111's styles dropdown and it's lack of basic features.
 
-Add to the Stable Diffusion Automatic 1111 web release root folder and run with python
+
+
+## How to use
+
+Copy styles.py to the root of your Stable Diffusion Web UI folder.
+```
+python styles.py
+```
 
 ## Features
 
