@@ -18,6 +18,7 @@ python styles.py
 * Create New Styles
 * Copy Styles
 * Edit Prompts and Negative Prompt
+* Organize Styles, Move them Up or Down in the List
 
 ## Dependencies
 
@@ -30,4 +31,4 @@ There were issues with the formatting of styles.csv that prevented me from utili
 ## Future
 
 * This would be better as an A1111 extension
-* I am not planning on updating this
+* I am not planning on updating this unless I personally want more features 
