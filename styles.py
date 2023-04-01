@@ -1,6 +1,6 @@
 import pandas as pd
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 class StyleEditor:
     def __init__(self, root):
@@ -27,7 +27,13 @@ class StyleEditor:
         self.style_listbox.grid(row=1, column=0, padx=(5, 0), pady=(5, 0), sticky="nsew")
         self.style_listbox.bind("<<ListboxSelect>>", self.show_style)
 
-        self.style_listbox_scrollbar = tk.Scrollbar(self.root, orient="vertical", command=self.style_listbox.yview)
+        custom_style = ttk.Style()
+        custom_style.configure("Vertical.TScrollbar", arrowsize=12)
+        custom_style.theme_use("default")
+
+
+        self.style_listbox_scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=self.style_listbox.yview)
+
         self.style_listbox_scrollbar.grid(row=1, column=1, pady=(5, 0), sticky="ns")
         self.style_listbox.config(yscrollcommand=self.style_listbox_scrollbar.set)
 
@@ -44,6 +50,12 @@ class StyleEditor:
 
         self.copy_style_button = tk.Button(self.button_frame, text="Copy Style", command=self.copy_style, width=button_width)
         self.copy_style_button.pack(side="top", pady=2, fill="x", anchor="w")
+
+        self.move_style_up_button = tk.Button(self.button_frame, text="Move Up", command=self.move_style_up, width=button_width)
+        self.move_style_up_button.pack(side="top", pady=(18, 2), fill="x", anchor="w")
+
+        self.move_style_down_button = tk.Button(self.button_frame, text="Move Down", command=self.move_style_down, width=button_width)
+        self.move_style_down_button.pack(side="top", pady=2, fill="x", anchor="w")
 
         self.labels = ["name", "prompt", "negative_prompt"]
         self.entries = []
@@ -83,9 +95,10 @@ class StyleEditor:
                 self.update_style_listbox()
                 self.style_listbox.selection_clear(0, tk.END)
                 self.style_listbox.selection_set(0)
+                self.show_style(None)
+                self.style_listbox.yview_moveto(0)
             except pd.errors.ParserError as e:
                 messagebox.showerror("Error", f"Error reading csv file: {e}")
-            self.show_style(None)
 
     # Create a new empty style in the DataFrame
     def create_new_style(self):
@@ -137,10 +150,16 @@ class StyleEditor:
 
     # Update the styles listbox with the current DataFrame contents
     def update_style_listbox(self):
-
+        selected_index = self.style_listbox.curselection()
         self.style_listbox.delete(0, tk.END)
+
         for _, row in self.styles_df.iterrows():
             self.style_listbox.insert(tk.END, row['name'])
+
+        if selected_index:
+            index = selected_index[0]
+            self.style_listbox.selection_set(index)
+            self.style_listbox.see(index)
 
     # Display the selected style in the form fields
     def show_style(self, event=None):
@@ -155,6 +174,36 @@ class StyleEditor:
 
         except IndexError:
             pass
+
+    # Function to move the selected style up in the list
+    def move_style_up(self):
+        selected = self.style_listbox.curselection()
+        if not selected or selected[0] == 0:
+            return
+
+        index = selected[0]
+        self.styles_df.iloc[index - 1:index + 1] = self.styles_df.iloc[[index, index - 1]].values
+        self.update_style_listbox()
+        self.style_listbox.selection_clear(0, tk.END)
+        self.style_listbox.selection_set(index - 1)
+        self.style_listbox.see(index - 1)
+        self.set_unsaved_changes(True)
+
+    # Function to move the selected style down in the list
+    def move_style_down(self):
+        selected = self.style_listbox.curselection()
+        if not selected or selected[0] == len(self.styles_df) - 1:
+            return
+
+        index = selected[0]
+        self.styles_df.iloc[index:index + 2] = self.styles_df.iloc[[index + 1, index]].values
+        self.update_style_listbox()
+        self.style_listbox.selection_clear(0, tk.END)
+        self.style_listbox.selection_set(index + 1)
+        self.style_listbox.see(index + 1)
+        self.set_unsaved_changes(True)
+
+
 
     # Set the unsaved_changes flag and update the "Unsaved changes" label
     def set_unsaved_changes(self, value):
